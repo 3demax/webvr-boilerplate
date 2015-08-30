@@ -56,13 +56,15 @@ function WebVRManager(renderer, effect, params) {
   // Check if the browser is compatible with WebVR.
   this.getDeviceByType_(HMDVRDevice).then(function(hmd) {
     // Activate either VR or Immersive mode.
+    console.log('hmd device', hmd, 'WEBVR_FORCE_DISTORTION', window.WEBVR_FORCE_DISTORTION);
     if (window.WEBVR_FORCE_DISTORTION) {
       this.activateVR_();
       this.distorter.setActive(true);
     } else if (hmd) {
       this.activateVR_();
       // Only enable distortion if we are dealing using the polyfill and this is iOS.
-      if (hmd.deviceName.indexOf('webvr-polyfill') == 0 && Util.isIOS()) {
+      //if (hmd.deviceName.indexOf('webvr-polyfill') == 0 && Util.isIOS()) {
+      if (hmd.deviceName.indexOf('webvr-polyfill') == 0) {
         this.distorter.setActive(true);
       }
     } else {

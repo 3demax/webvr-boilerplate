@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3069,7 +3069,9 @@ WebVRPolyfill.prototype.getVRDevices = function() {
  */
 WebVRPolyfill.prototype.isMobile = function() {
   return /Android/i.test(navigator.userAgent) ||
-      /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      /iPhone|iPad|iPod/i.test(navigator.userAgent) || 
+      /Firefox/i.test(navigator.userAgent)  || 
+      /ALCATELOneTouch6015X/i.test(navigator.userAgent);
 };
 
 WebVRPolyfill.prototype.isCardboardCompatible = function() {
@@ -3080,4 +3082,4 @@ WebVRPolyfill.prototype.isCardboardCompatible = function() {
 
 module.exports = WebVRPolyfill;
 
-},{"./base.js":1,"./cardboard-hmd-vr-device.js":2,"./gyro-position-sensor-vr-device.js":3,"./mouse-keyboard-position-sensor-vr-device.js":5}]},{},[4]);
+},{"./base.js":1,"./cardboard-hmd-vr-device.js":2,"./gyro-position-sensor-vr-device.js":3,"./mouse-keyboard-position-sensor-vr-device.js":5}]},{},[4])

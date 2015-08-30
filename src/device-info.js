@@ -39,12 +39,19 @@ var Devices = {
     widthMm: 69.54,
     heightMm: 122.35,
     bevelMm: 4.62
+  }),
+  AlcatelOneTouch6015X: new Device({
+    width: 960,
+    height: 540,
+    widthMm: 55.0,
+    heightMm: 103.0,
+    bevelMm: 3.96
   })
 };
 
 var Enclosures = {
   CardboardV1: new CardboardEnclosure({
-    ipdMm: 61,
+    ipdMm: 110,
     baselineLensCenterMm: 37.26
   }),
   FunkyMonkey: new CardboardEnclosure({
@@ -71,6 +78,7 @@ DeviceInfo.prototype.getLeftEyeCenter = function() {
   if (!this.device) {
     return DEFAULT_LEFT_CENTER;
   }
+  return DEFAULT_LEFT_CENTER;
   // Get parameters from the enclosure.
   var eyeToMid = this.enclosure.ipdMm / 2;
   var eyeToBase = this.enclosure.baselineLensCenterMm;
@@ -85,6 +93,7 @@ DeviceInfo.prototype.getLeftEyeCenter = function() {
   var px = 1 - (eyeToMid / halfWidthMm);
   var py = 1 - (eyeToBevel / heightMm);
 
+  console.log('getLeftEyeCenter', {x: px, y: py}, DEFAULT_LEFT_CENTER);
   return {x: px, y: py};
 };
 
@@ -98,9 +107,9 @@ DeviceInfo.prototype.getRightEyeCenter = function() {
 
 DeviceInfo.prototype.determineDevice_ = function() {
   // Only support iPhones.
-  if (!Util.isIOS()) {
-    return null;
-  }
+  //if (!Util.isIOS()) {
+  //  return null;
+  //}
 
   // On iOS, use screen dimensions to determine iPhone/iPad model.
   var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -116,7 +125,7 @@ DeviceInfo.prototype.determineDevice_ = function() {
     var device = Devices[id];
     // Expect an exact match on width.
     if (device.width == pixelWidth || device.width == pixelHeight) {
-      console.log('Detected iPhone: %s', id);
+      console.log('Detected phone: %s', id);
       // This is the right device.
       return device;
     }

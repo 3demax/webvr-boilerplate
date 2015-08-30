@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -219,12 +219,19 @@ var Devices = {
     widthMm: 69.54,
     heightMm: 122.35,
     bevelMm: 4.62
+  }),
+  AlcatelOneTouch6015X: new Device({
+    width: 960,
+    height: 540,
+    widthMm: 55.0,
+    heightMm: 103.0,
+    bevelMm: 3.96
   })
 };
 
 var Enclosures = {
   CardboardV1: new CardboardEnclosure({
-    ipdMm: 61,
+    ipdMm: 110,
     baselineLensCenterMm: 37.26
   }),
   FunkyMonkey: new CardboardEnclosure({
@@ -251,6 +258,7 @@ DeviceInfo.prototype.getLeftEyeCenter = function() {
   if (!this.device) {
     return DEFAULT_LEFT_CENTER;
   }
+  return DEFAULT_LEFT_CENTER;
   // Get parameters from the enclosure.
   var eyeToMid = this.enclosure.ipdMm / 2;
   var eyeToBase = this.enclosure.baselineLensCenterMm;
@@ -265,6 +273,7 @@ DeviceInfo.prototype.getLeftEyeCenter = function() {
   var px = 1 - (eyeToMid / halfWidthMm);
   var py = 1 - (eyeToBevel / heightMm);
 
+  console.log('getLeftEyeCenter', {x: px, y: py}, DEFAULT_LEFT_CENTER);
   return {x: px, y: py};
 };
 
@@ -278,9 +287,9 @@ DeviceInfo.prototype.getRightEyeCenter = function() {
 
 DeviceInfo.prototype.determineDevice_ = function() {
   // Only support iPhones.
-  if (!Util.isIOS()) {
-    return null;
-  }
+  //if (!Util.isIOS()) {
+  //  return null;
+  //}
 
   // On iOS, use screen dimensions to determine iPhone/iPad model.
   var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -296,7 +305,7 @@ DeviceInfo.prototype.determineDevice_ = function() {
     var device = Devices[id];
     // Expect an exact match on width.
     if (device.width == pixelWidth || device.width == pixelHeight) {
-      console.log('Detected iPhone: %s', id);
+      console.log('Detected phone: %s', id);
       // This is the right device.
       return device;
     }
@@ -695,13 +704,15 @@ function WebVRManager(renderer, effect, params) {
   // Check if the browser is compatible with WebVR.
   this.getDeviceByType_(HMDVRDevice).then(function(hmd) {
     // Activate either VR or Immersive mode.
+    console.log('hmd device', hmd, 'WEBVR_FORCE_DISTORTION', window.WEBVR_FORCE_DISTORTION);
     if (window.WEBVR_FORCE_DISTORTION) {
       this.activateVR_();
       this.distorter.setActive(true);
     } else if (hmd) {
       this.activateVR_();
       // Only enable distortion if we are dealing using the polyfill and this is iOS.
-      if (hmd.deviceName.indexOf('webvr-polyfill') == 0 && Util.isIOS()) {
+      //if (hmd.deviceName.indexOf('webvr-polyfill') == 0 && Util.isIOS()) {
+      if (hmd.deviceName.indexOf('webvr-polyfill') == 0) {
         this.distorter.setActive(true);
       }
     } else {
@@ -882,4 +893,4 @@ WebVRManager.prototype.exitVR = function() {
 
 module.exports = WebVRManager;
 
-},{"./cardboard-distorter.js":1,"./modes.js":5,"./util.js":6,"./wakelock.js":7,"./webvr-button.js":8}]},{},[4]);
+},{"./cardboard-distorter.js":1,"./modes.js":5,"./util.js":6,"./wakelock.js":7,"./webvr-button.js":8}]},{},[4])
